@@ -14,9 +14,34 @@ Class {
 { #category : #initialize }
 Board >> Initialize [
 	"Set size of game board to 8 and initialize the game board with cells"
-	size := 8.
-	cells := Array2D new: size.
+	self size: 8.
+	self cells: (Array2D new: size).
+	
 	1 to: size do: [ :row | 1 to: size do: 
-			[ :column | cells at: row at: column put: Cell new ] 
-		]
+			[ :column | cells at: row at: column put: (Cell new row: row column: column; isOccupied: false) ] 
+		].
+]
+
+{ #category : #accessing }
+Board >> cells [
+
+	^self cells
+]
+
+{ #category : #setting }
+Board >> cells: a2DArray [
+	cells := a2DArray
+	
+]
+
+{ #category : #accessing }
+Board >> size [ 
+
+	^self size
+]
+
+{ #category : #setting }
+Board >> size: aNumber [
+	size := aNumber
+	
 ]
