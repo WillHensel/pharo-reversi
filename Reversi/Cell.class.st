@@ -19,7 +19,7 @@ Cell >> isOccupied [
 	^self isOccupied
 ]
 
-{ #category : #setting }
+{ #category : #accessing }
 Cell >> isOccupied: aBoolean [
 
 	isOccupied := aBoolean
@@ -31,7 +31,7 @@ Cell >> locationX [
 	^self locationX
 ]
 
-{ #category : #setting }
+{ #category : #accessing }
 Cell >> locationX: aNumber [
 	
 	locationX := aNumber
@@ -43,15 +43,15 @@ Cell >> locationY [
 	^self locationY
 ]
 
-{ #category : #setting }
+{ #category : #accessing }
 Cell >> locationY: aNumber [
 
 	locationY := aNumber
 ]
 
-{ #category : #setting }
+{ #category : #accessing }
 Cell >> row: row column: column [
 
 	self locationY: row.
-	self locationX: column.
+	self locationX: column
 ]

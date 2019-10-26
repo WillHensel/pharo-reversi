@@ -40,19 +40,19 @@ Board >> draw [
 	| topRow gameBoard|
 	
 	topRow := String streamContents: [ :stream |	stream nextPutAll: '| + | '.
-		1 to: size do: [ :each | 
-			stream nextPutAll: each asString; 
+
+		1 to: size do: [ :column | 
+			stream nextPutAll: column asString; 
 						nextPutAll: ' | '
 		].
 		stream nextPut: Character cr
 	].
 
 	gameBoard := String streamContents: [ :stream |
-		1 to: size do: [ :each | 
+		1 to: size do: [ :row | 
 			stream nextPutAll: '| '; 
-					 	nextPutAll: each asString; 
-						nextPutAll: ' | '; 
-						nextPut: Character cr ]
+					 	nextPutAll: row asString; 
+						nextPutAll: ' | ']
 	].
 
 	Transcript show: topRow.
