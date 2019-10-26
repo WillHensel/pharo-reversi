@@ -6,6 +6,7 @@ Class {
 	#superclass : #Board,
 	#type : #variable,
 	#instVars : [
+		'occupiedBy',
 		'isOccupied',
 		'locationX',
 		'locationY'
@@ -50,8 +51,25 @@ Cell >> locationY: aNumber [
 ]
 
 { #category : #accessing }
+Cell >> occupiedBy [
+	^ occupiedBy
+]
+
+{ #category : #accessing }
+Cell >> occupiedBy: anObject [
+
+	occupiedBy := anObject
+]
+
+{ #category : #accessing }
 Cell >> row: row column: column [
 
 	self locationY: row.
 	self locationX: column
+]
+
+{ #category : #initialization }
+Cell >> setEmpty [
+
+	self occupiedBy: ' '
 ]

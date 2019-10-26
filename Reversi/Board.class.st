@@ -18,14 +18,14 @@ Board >> Initialize [
 	self cells: (Array2D new: size).
 	
 	1 to: size do: [ :row | 1 to: size do: 
-			[ :column | cells at: row at: column put: (Cell new row: row column: column; isOccupied: false) ] 
+			[ :column |self cells at: row at: column put: (Cell new row: row column: column; setEmpty) ] 
 		].
 ]
 
 { #category : #accessing }
 Board >> cells [
 
-	^self cells
+	^cells
 ]
 
 { #category : #setting }
@@ -40,7 +40,6 @@ Board >> draw [
 	| topRow gameBoard|
 	
 	topRow := String streamContents: [ :stream |	stream nextPutAll: '| + | '.
-
 		1 to: size do: [ :column | 
 			stream nextPutAll: column asString; 
 						nextPutAll: ' | '
@@ -52,7 +51,13 @@ Board >> draw [
 		1 to: size do: [ :row | 
 			stream nextPutAll: '| '; 
 					 	nextPutAll: row asString; 
-						nextPutAll: ' | ']
+						nextPutAll: ' | '.
+			1 to: size do: [ :column |
+				stream nextPutAll: ((cells at: row at: column) occupiedBy);
+							nextPutAll: ' | '
+			].
+			stream nextPut: Character cr
+		]
 	].
 
 	Transcript show: topRow.
