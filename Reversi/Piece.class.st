@@ -5,7 +5,7 @@ Class {
 	#name : #Piece,
 	#superclass : #Game,
 	#instVars : [
-		'state'
+		'currentState'
 	],
 	#category : #Reversi
 }

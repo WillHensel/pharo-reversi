@@ -34,6 +34,35 @@ Board >> cells: a2DArray [
 	
 ]
 
+{ #category : #drawing }
+Board >> draw [
+
+	| topRow gameBoard|
+	
+	topRow := String streamContents: [ :stream |	stream nextPutAll: '| + | '.
+		1 to: size do: [ :each | 
+			stream nextPutAll: each asString; 
+						nextPutAll: ' | '
+		].
+		stream nextPut: Character cr
+	].
+
+	gameBoard := String streamContents: [ :stream |
+		1 to: size do: [ :each | 
+			stream nextPutAll: '| '; 
+					 	nextPutAll: each asString; 
+						nextPutAll: ' | '; 
+						nextPut: Character cr ]
+	].
+
+	Transcript show: topRow.
+	Transcript show: gameBoard
+	
+
+
+
+]
+
 { #category : #accessing }
 Board >> size [ 
 

@@ -5,6 +5,7 @@ Class {
 	#name : #Player,
 	#superclass : #Game,
 	#instVars : [
+		'name',
 		'color'
 	],
 	#category : #Reversi
