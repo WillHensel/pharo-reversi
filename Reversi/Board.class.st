@@ -34,6 +34,12 @@ Board >> cells: a2DArray [
 	
 ]
 
+{ #category : #accessing }
+Board >> clear [
+
+	Transcript clear.
+]
+
 { #category : #drawing }
 Board >> draw [
 

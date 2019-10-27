@@ -6,7 +6,8 @@ Class {
 	#superclass : #Game,
 	#instVars : [
 		'name',
-		'color'
+		'color',
+		'number'
 	],
 	#category : #Reversi
 }
@@ -32,8 +33,19 @@ Player >> name: anObject [
 ]
 
 { #category : #accessing }
-Player >> name: aName color: aColor [
+Player >> name: aName color: aColor number: aNumber [
 	
 	self name: aName.
-	self color: aColor
+	self color: aColor.
+	self number: aNumber
+]
+
+{ #category : #accessing }
+Player >> number [
+	^ number
+]
+
+{ #category : #accessing }
+Player >> number: anObject [
+	number := anObject
 ]
