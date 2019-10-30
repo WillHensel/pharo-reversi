@@ -1,19 +1,18 @@
 "
-Holds game logic. All other game elements are subclasses.
+TODO
 "
 Class {
 	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
-		'gameBoard',
-		'players'
+		'players',
+		'gameBoard'
 	],
 	#category : #Reversi
 }
 
-{ #category : #adding }
-Game >> addPlayer: aPlayer [
-	
+{ #category : #accessing }
+Game >> addPlayer: aPlayer [ 
 	self players add: aPlayer
 ]
 
@@ -27,28 +26,14 @@ Game >> gameBoard: anObject [
 	gameBoard := anObject
 ]
 
-{ #category : #'game logic' }
-Game >> gameLoop [
-
-	| answerName answerColor |
-	
-	self gameBoard clear.
-	self gameBoard draw.
-	
-	answerName := UIManager default request: 'Enter player 1 name:'.
-	answerColor := UIManager default chooseFrom: #('dark (D)' 'light (L)') values: #('dark' 'light').
-	self addPlayer: (Player new name: answerName color: answerColor number: 1).
-	
-
-
+{ #category : #initialization }
+Game >> initialize [
+	self players: (OrderedCollection new: 2)
 ]
 
 { #category : #initialization }
-Game >> initializeGame [
-	
-	self gameBoard: Board new Initialize.
-	self players: OrderedCollection new.
-	self gameLoop
+Game >> initializeGameBoard [
+	self gameBoard: Board new.
 ]
 
 { #category : #accessing }

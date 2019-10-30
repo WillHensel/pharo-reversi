@@ -1,75 +1,32 @@
 "
-Holds a piece a location on the game board.
+TODO
 "
 Class {
 	#name : #Cell,
 	#superclass : #Board,
-	#type : #variable,
 	#instVars : [
-		'occupiedBy',
-		'isOccupied',
-		'locationX',
-		'locationY'
+		'location',
+		'colorCode'
 	],
 	#category : #Reversi
 }
 
 { #category : #accessing }
-Cell >> isOccupied [
-
-	^self isOccupied
+Cell >> colorCode [
+	^ colorCode
 ]
 
 { #category : #accessing }
-Cell >> isOccupied: aBoolean [
-
-	isOccupied := aBoolean
+Cell >> colorCode: anObject [
+	colorCode := anObject
 ]
 
 { #category : #accessing }
-Cell >> locationX [
-
-	^self locationX
+Cell >> location [
+	^ location
 ]
 
 { #category : #accessing }
-Cell >> locationX: aNumber [
-	
-	locationX := aNumber
-]
-
-{ #category : #accessing }
-Cell >> locationY [
-
-	^self locationY
-]
-
-{ #category : #accessing }
-Cell >> locationY: aNumber [
-
-	locationY := aNumber
-]
-
-{ #category : #accessing }
-Cell >> occupiedBy [
-	^ occupiedBy
-]
-
-{ #category : #accessing }
-Cell >> occupiedBy: anObject [
-
-	occupiedBy := anObject
-]
-
-{ #category : #accessing }
-Cell >> row: row column: column [
-
-	self locationY: row.
-	self locationX: column
-]
-
-{ #category : #initialization }
-Cell >> setEmpty [
-
-	self occupiedBy: ' '
+Cell >> location: anObject [
+	location := anObject
 ]

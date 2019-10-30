@@ -1,13 +1,12 @@
 "
-Player is associated with a piece state. Player can interact with pieces.
+TODO
 "
 Class {
 	#name : #Player,
 	#superclass : #Game,
 	#instVars : [
 		'name',
-		'color',
-		'number'
+		'color'
 	],
 	#category : #Reversi
 }
@@ -27,25 +26,13 @@ Player >> name [
 	^ name
 ]
 
-{ #category : #accessing }
-Player >> name: anObject [
-	name := anObject
+{ #category : #'as yet unclassified' }
+Player >> name: aString [ 
+	name := aString
 ]
 
-{ #category : #accessing }
-Player >> name: aName color: aColor number: aNumber [
-	
-	self name: aName.
-	self color: aColor.
-	self number: aNumber
-]
-
-{ #category : #accessing }
-Player >> number [
-	^ number
-]
-
-{ #category : #accessing }
-Player >> number: anObject [
-	number := anObject
+{ #category : #accessors }
+Player >> name: aString color: anInteger [ 
+	self name: aString.
+	self color: anInteger.
 ]
