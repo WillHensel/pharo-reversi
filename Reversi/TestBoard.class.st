@@ -30,16 +30,16 @@ TestBoard >> testFillBoardWithCells [
 		1 to: testBoard size do: [ :col |
 		self assert: ((testBoard cells at: row at: col) class) equals: Cell.
 		
-		1 to: darkStarterCells size do: [ :darkStarterLocation | 
-			({ row. col } = darkStarterLocation) ifTrue: [ (self assert: (testBoard cells at: row at: col)) colorCode equals: 1 ]
-																ifFalse: (self assert: (testBoard cells at: row at: col) colorCode equals: 0) ].
+		darkStarterCells do: [ :darkStarterLocation | 
+			({ row. col } = darkStarterLocation) ifTrue: [ self assert: (testBoard cells at: row at: col) colorCode equals: 1 ]
+																ifFalse: [ self assert: (testBoard cells at: row at: col) colorCode equals: 0 ]
+			].
 		
-		1 to: lightStarterCells size do: [ :lightStarterLocation |
-		( { row. col } = lightStarterLocation) ifTrue: [ (self assert: (testBoard cells at: row at: col)) colorCode equals: 2 ] 
-																ifFalse: (self assert: (testBoard cells at: row at: col) colorCode equals: 0) ].
+		lightStarterCells do: [ :lightStarterLocation |
+		({ row. col } = lightStarterLocation) ifTrue: [ self assert: (testBoard cells at: row at: col) colorCode equals: 2 ] 
+																ifFalse: [ self assert: (testBoard cells at: row at: col) colorCode equals: 0 ].
 			
+			]
 		]
 	].
-	
-	
 ]
