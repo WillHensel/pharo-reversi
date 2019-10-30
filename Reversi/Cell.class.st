@@ -21,6 +21,12 @@ Cell >> colorCode: anObject [
 	colorCode := anObject
 ]
 
+{ #category : #'as yet unclassified' }
+Cell >> colorCode: aColorCode location: aLocation [
+	colorCode := aColorCode.
+	location := aLocation
+]
+
 { #category : #accessing }
 Cell >> location [
 	^ location

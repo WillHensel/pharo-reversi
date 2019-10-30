@@ -32,7 +32,7 @@ Board >> fillBoardWithCells [
 	 1 to: self size do: [ :row |
 		1 to: self size do: [ :col |
 			
-			self cells at: row at: col put: (Cell new colorCode: 0).
+			self cells at: row at: col put: (Cell new colorCode: 0 location: {row. col}).
 			
 			darkStarterCells do: [ :darkStarterLocation | 
 				({ row. col } = darkStarterLocation) ifTrue: [ (self cells at: row at: col) colorCode: 1 ] ].

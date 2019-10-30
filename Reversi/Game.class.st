@@ -16,6 +16,50 @@ Game >> addPlayer: aPlayer [
 	self players add: aPlayer
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> checkLegalMove: aCell [
+	"check cells around specified cell, if num dark cells > 1 and num light cells > 1 return true"
+	
+	| row col numLight numDark currentCell |
+	
+	row := aCell location at: 1.
+	col := aCell location at: 2.
+	numDark := 0.
+	numLight := 0.
+	
+	row < self gameBoard size ifTrue: [
+		currentCell := self gameBoard cells at: row + 1 at: col.
+		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	].
+	
+	row < self gameBoard size & col < self gameBoard size ifTrue: [
+		currentCell := self gameBoard cells at: row + 1 at: col + 1.
+		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	].
+	
+	col < self gameBoard size ifTrue: [
+		currentCell := self gameBoard cells at: row at: col + 1.
+		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	].
+	
+	row > self gameBoard size & col < self gameBoard size ifTrue: [
+		currentCell := gameBoard cells at: row - 1 at: col + 1.
+		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	].
+	
+	currentCell := self gameBoard cells at: row - 1 at: col.
+	currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	
+	currentCell := self gameBoard cells at: row - 1 at: col - 1.
+	currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	
+	currentCell := self gameBoard cells at: row at: col - 1.
+	currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	
+	currentCell := self gameBoard cells at: row + 1 at: col - 1.
+	currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+]
+
 { #category : #accessing }
 Game >> gameBoard [
 	^ gameBoard
@@ -28,7 +72,9 @@ Game >> gameBoard: anObject [
 
 { #category : #initialization }
 Game >> initialize [
-	self players: (OrderedCollection new: 2)
+	super initialize.
+	self players: (OrderedCollection new: 2).
+	self initializeGameBoard
 ]
 
 { #category : #initialization }
