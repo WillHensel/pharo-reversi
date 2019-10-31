@@ -27,37 +27,47 @@ Game >> checkLegalMove: aCell [
 	numDark := 0.
 	numLight := 0.
 	
-	row < self gameBoard size ifTrue: [
+	(row < self gameBoard size) ifTrue: [
 		currentCell := self gameBoard cells at: row + 1 at: col.
 		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
 	].
 	
-	row < self gameBoard size & col < self gameBoard size ifTrue: [
+	(row < self gameBoard size) & (col < self gameBoard size) ifTrue: [
 		currentCell := self gameBoard cells at: row + 1 at: col + 1.
 		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
 	].
 	
-	col < self gameBoard size ifTrue: [
+	(col < self gameBoard size) ifTrue: [
 		currentCell := self gameBoard cells at: row at: col + 1.
 		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
 	].
 	
-	row > self gameBoard size & col < self gameBoard size ifTrue: [
+	(row > self gameBoard size) & (col < self gameBoard size) ifTrue: [
 		currentCell := gameBoard cells at: row - 1 at: col + 1.
 		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
 	].
 	
-	currentCell := self gameBoard cells at: row - 1 at: col.
-	currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	(row > self gameBoard size) ifTrue: [
+		currentCell := self gameBoard cells at: row - 1 at: col.
+		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	].
 	
-	currentCell := self gameBoard cells at: row - 1 at: col - 1.
-	currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	(row > self gameBoard size) & (col > self gameBoard size) ifTrue: [
+		currentCell := self gameBoard cells at: row - 1 at: col - 1.
+		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	].
 	
-	currentCell := self gameBoard cells at: row at: col - 1.
-	currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	(col > self gameBoard size) ifTrue: [
+		currentCell := self gameBoard cells at: row at: col - 1.
+		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	].
 	
-	currentCell := self gameBoard cells at: row + 1 at: col - 1.
-	currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	(row < self gameBoard size) & (col > self gameBoard size) ifTrue: [
+		currentCell := self gameBoard cells at: row + 1 at: col - 1.
+		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	].
+
+	(numDark > 1) ifTrue: [ (numLight > 1) ifTrue: [ ^true ] ] ifFalse: [ ^false ]
 ]
 
 { #category : #accessing }
