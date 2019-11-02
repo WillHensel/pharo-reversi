@@ -36,15 +36,26 @@ ReversiTest >> testAddPlayers [
 ]
 
 { #category : #tests }
-ReversiTest >> testCheckLegalMove [
+ReversiTest >> testCheckGameOver [
+	
+	| tempGame |
+	tempGame := testGame.
+	tempGame gameBoard cells do: [ :cell | cell colorCode: 1 ].
+	self assert: tempGame checkGameOver equals: true.
+]
+
+{ #category : #tests }
+ReversiTest >> testCheckLegalMoves [
 	
 	| outputs expectedOutputs |
-	outputs := OrderedCollection new.
-	expectedOutputs := OrderedCollection with: (testGame gameBoard cells at: 4 at: 3) with: (testGame gameBoard cells at: 6 at: 5).
 	
-	outputs := testGame checkAdjacentCells: (testGame gameBoard cells at: 4 at: 5).
+	outputs := testGame checkLegalMoves.
+	expectedOutputs := OrderedCollection with: (testGame gameBoard cells at: 4 at: 3) with: (testGame gameBoard cells at: 6 at: 5) with: (testGame gameBoard cells at: 3 at: 4) with: (testGame gameBoard cells at: 5 at: 6).
 	
-	self assert: (expectedOutputs includes: outputs) equals: true.
+	self assert: (outputs includes: (expectedOutputs at: 1)) equals: true.
+	self assert: (outputs includes: (expectedOutputs at: 2)) equals: true.
+	self assert: (outputs includes: (expectedOutputs at: 3)) equals: true.
+	self assert: (outputs includes: (expectedOutputs at: 4)) equals: true.
 ]
 
 { #category : #tests }
@@ -80,6 +91,6 @@ ReversiTest >> testInitializeGameBoard [
 
 { #category : #tests }
 ReversiTest >> testTakeTurn [
-	testPlayer takeTurn: (testBoard cells at: 1 at: 1).
-	self assert: (testBoard cells at: 1 at: 1) colorCode equals: 1
+	testPlayer takeTurn: (testGame gameBoard cells at: 1 at: 1).
+	self assert: (testGame gameBoard cells at: 1 at: 1) colorCode equals: 1
 ]
