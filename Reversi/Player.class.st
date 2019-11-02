@@ -37,7 +37,7 @@ Player >> name: aString color: anInteger [
 	self color: anInteger.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Player >> takeTurn: aCell [
 	aCell colorCode: self color
 	

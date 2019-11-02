@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'players',
-		'gameBoard'
+		'gameBoard',
+		'currentPlayerTurn'
 	],
 	#category : #Reversi
 }
@@ -16,58 +17,134 @@ Game >> addPlayer: aPlayer [
 	self players add: aPlayer
 ]
 
-{ #category : #'as yet unclassified' }
-Game >> checkLegalMove: aCell [
-	"check cells around specified cell, if num dark cells > 1 and num light cells > 1 return true"
+
+{ #category : #check }
+Game >> checkAdjacentCells: aCell [
+"Failing tests"
+	| currentCell legalMoves |
 	
-	| row col numLight numDark currentCell |
+	legalMoves := OrderedCollection  new.
 	
-	row := aCell location at: 1.
-	col := aCell location at: 2.
-	numDark := 0.
-	numLight := 0.
+	aCell colorCode = currentPlayerTurn color ifTrue: [
 	
-	(row < self gameBoard size) ifTrue: [
-		currentCell := self gameBoard cells at: row + 1 at: col.
-		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
-	].
-	
-	(row < self gameBoard size) & (col < self gameBoard size) ifTrue: [
-		currentCell := self gameBoard cells at: row + 1 at: col + 1.
-		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
-	].
-	
-	(col < self gameBoard size) ifTrue: [
-		currentCell := self gameBoard cells at: row at: col + 1.
-		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
-	].
-	
-	(row > self gameBoard size) & (col < self gameBoard size) ifTrue: [
-		currentCell := gameBoard cells at: row - 1 at: col + 1.
-		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
-	].
-	
-	(row > self gameBoard size) ifTrue: [
-		currentCell := self gameBoard cells at: row - 1 at: col.
-		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
-	].
-	
-	(row > self gameBoard size) & (col > self gameBoard size) ifTrue: [
-		currentCell := self gameBoard cells at: row - 1 at: col - 1.
-		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
-	].
-	
-	(col > self gameBoard size) ifTrue: [
-		currentCell := self gameBoard cells at: row at: col - 1.
-		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
-	].
-	
-	(row < self gameBoard size) & (col > self gameBoard size) ifTrue: [
-		currentCell := self gameBoard cells at: row + 1 at: col - 1.
-		currentCell colorCode ~= 0 ifTrue: [ currentCell colorCode = 1 ifTrue: [ numDark := numDark + 1 ]. currentCell colorCode = 2 ifTrue: [ numLight := numLight + 1 ] ].
+	currentCell := self gameBoard cells at: ((aCell location at: 1) - 1) at: ((aCell location at: 2) + 1).
+	currentCell colorCode ~= 0 ifTrue: [
+		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
+			[((currentCell location at: 1) < self gameBoard size) & 
+				((currentCell location at: 2) < self gameBoard size) & 
+					(currentCell colorCode ~= 0)] whileTrue: [ 
+				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: ((currentCell location at: 2) + 1).
+			].
+		].
+		legalMoves add: currentCell.
 	].
 
-	(numDark > 1) ifTrue: [ (numLight > 1) ifTrue: [ ^true ] ] ifFalse: [ ^false ]
+	currentCell := self gameBoard cells at: (aCell location at: 1) at: ((aCell location at: 2) + 1).
+		currentCell colorCode ~= 0 ifTrue: [
+		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
+			[((currentCell location at: 2) < self gameBoard size) & 
+				(currentCell colorCode ~= 0)] whileTrue: [ 
+				currentCell := self gameBoard cells at: (currentCell location at: 1) at: ((currentCell location at: 2) + 1).
+			].
+		].
+		legalMoves add: currentCell.
+	].
+
+	currentCell := self gameBoard cells at: ((aCell location at: 1) + 1) at: ((aCell location at: 2) + 1).
+	currentCell colorCode ~= 0 ifTrue: [
+		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
+			[((currentCell location at: 1) < self gameBoard size) & 
+				((currentCell location at: 2) < self gameBoard size) & 
+					(currentCell colorCode ~= 0)] whileTrue: [ 
+				currentCell := self gameBoard cells at: ((currentCell location at: 1) + 1) at: ((currentCell location at: 2) + 1).
+			].
+		].
+		legalMoves add: currentCell.
+	].
+	
+	currentCell := self gameBoard cells at: ((aCell location at: 1) + 1) at: (aCell location at: 2).
+	currentCell colorCode ~= 0 ifTrue: [
+		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
+			[((currentCell location at: 1) < self gameBoard size) & 
+				(currentCell colorCode ~= 0)] whileTrue: [ 
+				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: (currentCell location at: 2).
+			].
+		].
+		legalMoves add: currentCell.
+	].
+	
+	currentCell := self gameBoard cells at: ((aCell location at: 1) + 1) at: ((aCell location at: 2) - 1).
+	currentCell colorCode ~= 0 ifTrue: [
+		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
+			[((currentCell location at: 1) < self gameBoard size) & 
+				((currentCell location at: 2) < self gameBoard size) & 
+					(currentCell colorCode ~= 0)] whileTrue: [ 
+				currentCell := self gameBoard cells at: ((currentCell location at: 1) + 1) at: ((currentCell location at: 2) - 1).
+			].
+		].
+		legalMoves add: currentCell.
+	].
+	
+	currentCell := self gameBoard cells at: (aCell location at: 1) at: ((aCell location at: 2) - 1).
+	currentCell colorCode ~= 0 ifTrue: [
+		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
+			[((currentCell location at: 2) < self gameBoard size) & 
+				(currentCell colorCode ~= 0)] whileTrue: [ 
+				currentCell := self gameBoard cells at: (currentCell location at: 1) at: ((currentCell location at: 2) - 1).
+			].
+		].
+		legalMoves add: currentCell.
+	].
+	
+	currentCell := self gameBoard cells at: ((aCell location at: 1) - 1) at: ((aCell location at: 2) - 1).
+	currentCell colorCode ~= 0 ifTrue: [
+		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
+			[((currentCell location at: 1) < self gameBoard size) & 
+				((currentCell location at: 2) < self gameBoard size) & 
+					(currentCell colorCode ~= 0)] whileTrue: [ 
+				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: ((currentCell location at: 2) - 1).
+			].
+		].
+		legalMoves add: currentCell.
+	].
+	
+	currentCell := self gameBoard cells at: ((aCell location at: 1) - 1) at: (aCell location at: 2).
+	currentCell colorCode ~= 0 ifTrue: [
+		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
+			[((currentCell location at: 1) < self gameBoard size) & 
+				(currentCell colorCode ~= 0)] whileTrue: [ 
+				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: (currentCell location at: 2).
+			].
+		].
+		legalMoves add: currentCell.
+	].
+	
+	^legalMoves
+	] ifFalse: [ ^false ]
+]
+
+{ #category : #check }
+Game >> checkLegalMoves: aCell [
+	"check cells around specified cell, if num dark cells > 1 and num light cells > 1 return true"
+	"TODO: test"
+	| adjacentCellOutput allLegalMoves |
+	allLegalMoves := OrderedCollection new.
+	
+	self gameBoard cells do: [ :cell | cell colorCode = currentPlayerTurn color ifTrue: [ 
+			adjacentCellOutput := self checkAdjacentCells: cell.
+			adjacentCellOutput collect: [ :outputCell ] as:allLegalMoves.
+		] 
+	]
+]
+
+{ #category : #accessing }
+Game >> currentPlayerTurn [
+	^ currentPlayerTurn
+]
+
+{ #category : #accessing }
+Game >> currentPlayerTurn: anObject [
+	currentPlayerTurn := anObject
 ]
 
 { #category : #accessing }

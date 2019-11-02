@@ -21,7 +21,8 @@ Cell >> colorCode: anObject [
 	colorCode := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+
+{ #category : #setting }
 Cell >> colorCode: aColorCode location: aLocation [
 	colorCode := aColorCode.
 	location := aLocation

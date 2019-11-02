@@ -15,9 +15,11 @@ ReversiTest >> setUp [
 	
 	testPlayer := Player new name: 'testPlayer' color: 1.
 	testGame := Game new.
+	testGame currentPlayerTurn: testPlayer.
+	testGame initializeGameBoard.
+	testGame gameBoard fillBoardWithCells.
 	testBoard := testGame gameBoard.
-	testBoard fillBoardWithCells
-
+	testBoard fillBoardWithCells.
 ]
 
 { #category : #tests }
@@ -35,13 +37,14 @@ ReversiTest >> testAddPlayers [
 
 { #category : #tests }
 ReversiTest >> testCheckLegalMove [
-	| falseCell trueCell |
 	
-	falseCell := testBoard cells at: 1 at: 1.
-	trueCell := testBoard cells at: 3 at: 4.
+	| outputs expectedOutputs |
+	outputs := OrderedCollection new.
+	expectedOutputs := OrderedCollection with: (testGame gameBoard cells at: 4 at: 3) with: (testGame gameBoard cells at: 6 at: 5).
 	
-	self assert: (testGame checkLegalMove: falseCell) equals: false.
-	self assert: (testGame checkLegalMove: trueCell) equals: true
+	outputs := testGame checkAdjacentCells: (testGame gameBoard cells at: 4 at: 5).
+	
+	self assert: (expectedOutputs includes: outputs) equals: true.
 ]
 
 { #category : #tests }
