@@ -26,13 +26,19 @@ Player >> name [
 	^ name
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Player >> name: aString [ 
 	name := aString
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 Player >> name: aString color: anInteger [ 
 	self name: aString.
 	self color: anInteger.
+]
+
+{ #category : #action }
+Player >> takeTurn: aCell [
+	aCell colorCode: self color
+	
 ]
