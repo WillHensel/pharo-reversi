@@ -21,7 +21,6 @@ Cell >> colorCode: anObject [
 	colorCode := anObject
 ]
 
-
 { #category : #setting }
 Cell >> colorCode: aColorCode location: aLocation [
 	colorCode := aColorCode.

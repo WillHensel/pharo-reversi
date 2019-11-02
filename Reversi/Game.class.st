@@ -17,7 +17,6 @@ Game >> addPlayer: aPlayer [
 	self players add: aPlayer
 ]
 
-
 { #category : #check }
 Game >> checkAdjacentCells: aCell [
 "Failing tests"
@@ -35,8 +34,8 @@ Game >> checkAdjacentCells: aCell [
 					(currentCell colorCode ~= 0)] whileTrue: [ 
 				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: ((currentCell location at: 2) + 1).
 			].
-		].
-		legalMoves add: currentCell.
+			legalMoves add: currentCell.
+		]
 	].
 
 	currentCell := self gameBoard cells at: (aCell location at: 1) at: ((aCell location at: 2) + 1).
@@ -46,8 +45,8 @@ Game >> checkAdjacentCells: aCell [
 				(currentCell colorCode ~= 0)] whileTrue: [ 
 				currentCell := self gameBoard cells at: (currentCell location at: 1) at: ((currentCell location at: 2) + 1).
 			].
-		].
-		legalMoves add: currentCell.
+			legalMoves add: currentCell.
+		]
 	].
 
 	currentCell := self gameBoard cells at: ((aCell location at: 1) + 1) at: ((aCell location at: 2) + 1).
@@ -58,8 +57,8 @@ Game >> checkAdjacentCells: aCell [
 					(currentCell colorCode ~= 0)] whileTrue: [ 
 				currentCell := self gameBoard cells at: ((currentCell location at: 1) + 1) at: ((currentCell location at: 2) + 1).
 			].
-		].
-		legalMoves add: currentCell.
+			legalMoves add: currentCell.
+		]
 	].
 	
 	currentCell := self gameBoard cells at: ((aCell location at: 1) + 1) at: (aCell location at: 2).
@@ -67,10 +66,10 @@ Game >> checkAdjacentCells: aCell [
 		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
 			[((currentCell location at: 1) < self gameBoard size) & 
 				(currentCell colorCode ~= 0)] whileTrue: [ 
-				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: (currentCell location at: 2).
+				currentCell := self gameBoard cells at: ((currentCell location at: 1) + 1) at: (currentCell location at: 2).
 			].
-		].
-		legalMoves add: currentCell.
+			legalMoves add: currentCell.
+		]
 	].
 	
 	currentCell := self gameBoard cells at: ((aCell location at: 1) + 1) at: ((aCell location at: 2) - 1).
@@ -81,8 +80,8 @@ Game >> checkAdjacentCells: aCell [
 					(currentCell colorCode ~= 0)] whileTrue: [ 
 				currentCell := self gameBoard cells at: ((currentCell location at: 1) + 1) at: ((currentCell location at: 2) - 1).
 			].
-		].
-		legalMoves add: currentCell.
+			legalMoves add: currentCell.
+		]
 	].
 	
 	currentCell := self gameBoard cells at: (aCell location at: 1) at: ((aCell location at: 2) - 1).
@@ -92,8 +91,8 @@ Game >> checkAdjacentCells: aCell [
 				(currentCell colorCode ~= 0)] whileTrue: [ 
 				currentCell := self gameBoard cells at: (currentCell location at: 1) at: ((currentCell location at: 2) - 1).
 			].
-		].
-		legalMoves add: currentCell.
+			legalMoves add: currentCell.
+		]
 	].
 	
 	currentCell := self gameBoard cells at: ((aCell location at: 1) - 1) at: ((aCell location at: 2) - 1).
@@ -104,8 +103,8 @@ Game >> checkAdjacentCells: aCell [
 					(currentCell colorCode ~= 0)] whileTrue: [ 
 				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: ((currentCell location at: 2) - 1).
 			].
-		].
-		legalMoves add: currentCell.
+			legalMoves add: currentCell.
+		]
 	].
 	
 	currentCell := self gameBoard cells at: ((aCell location at: 1) - 1) at: (aCell location at: 2).
@@ -115,8 +114,8 @@ Game >> checkAdjacentCells: aCell [
 				(currentCell colorCode ~= 0)] whileTrue: [ 
 				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: (currentCell location at: 2).
 			].
-		].
-		legalMoves add: currentCell.
+			legalMoves add: currentCell.
+		]
 	].
 	
 	^legalMoves
@@ -124,7 +123,14 @@ Game >> checkAdjacentCells: aCell [
 ]
 
 { #category : #check }
-Game >> checkLegalMoves: aCell [
+Game >> checkGameOver [
+	
+	self gameBoard cells do: [ :cell | cell colorCode = 0 ifTrue: [ ^false ] ].
+	^true
+]
+
+{ #category : #check }
+Game >> checkLegalMoves [
 	"check cells around specified cell, if num dark cells > 1 and num light cells > 1 return true"
 	"TODO: test"
 	| adjacentCellOutput allLegalMoves |
@@ -132,9 +138,12 @@ Game >> checkLegalMoves: aCell [
 	
 	self gameBoard cells do: [ :cell | cell colorCode = currentPlayerTurn color ifTrue: [ 
 			adjacentCellOutput := self checkAdjacentCells: cell.
-			adjacentCellOutput collect: [ :outputCell ] as:allLegalMoves.
+			"Complains about each ~= false ifTrue:. This is necessary as the other elements are Cells, not Booleans"
+			adjacentCellOutput do: [ :each | each ~= false ifTrue: [ allLegalMoves add: each ] ]
 		] 
-	]
+	].
+	
+	^allLegalMoves
 ]
 
 { #category : #accessing }
@@ -155,6 +164,20 @@ Game >> gameBoard [
 { #category : #accessing }
 Game >> gameBoard: anObject [
 	gameBoard := anObject
+]
+
+{ #category : #accessing }
+Game >> getWinner [
+	| darkCount lightCount |
+	
+	darkCount := 0.
+	lightCount := 0.
+	
+	self gameBoard cells do: [ :cell | 
+		(cell colorCode: 1) ifTrue: [darkCount := darkCount + 1].
+		(cell colorCode: 2) ifTrue: [lightCount := lightCount + 2]
+	
+	]
 ]
 
 { #category : #initialization }
