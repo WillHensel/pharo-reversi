@@ -20,8 +20,6 @@ ReversiTest >> setUp [
 	testGame gameBoard fillBoardWithCells.
 	testBoard := testGame gameBoard.
 	testBoard fillBoardWithCells.
-	
-
 ]
 
 { #category : #tests }

@@ -17,6 +17,7 @@ Game >> addPlayer: aPlayer [
 	self players add: aPlayer
 ]
 
+
 { #category : #check }
 Game >> checkAdjacentCells: aCell [
 "Failing tests"
