@@ -56,6 +56,13 @@ ReversiTest >> testCheckLegalMoves [
 	self assert: (outputs includes: (expectedOutputs at: 2)) equals: true.
 	self assert: (outputs includes: (expectedOutputs at: 3)) equals: true.
 	self assert: (outputs includes: (expectedOutputs at: 4)) equals: true.
+
+]
+
+{ #category : #tests }
+ReversiTest >> testDraw [
+
+	testGame gameBoard draw.
 ]
 
 { #category : #tests }

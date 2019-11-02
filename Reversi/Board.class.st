@@ -21,6 +21,35 @@ Board >> cells: anObject [
 	cells := anObject
 ]
 
+{ #category : #drawing }
+Board >> draw [ 
+
+	
+	| drawTopRow drawGameBoard|
+	
+	drawTopRow := String streamContents: [ :stream |	stream nextPutAll: '| + | '.
+		1 to: size do: [ :each | 
+			stream nextPutAll: each asString; 
+						nextPutAll: ' | '
+		].
+		stream nextPut: Character cr
+	].
+
+	drawGameBoard := String streamContents: [ :stream |
+		1 to: size do: [ :row | 
+			stream nextPutAll: '| '; 
+					 	nextPutAll: row asString;
+						nextPutAll: ' | '.
+						
+						1 to: size do: [ :col | stream nextPutAll: ((cells at: row at: col) colorCode) ].
+						
+						stream nextPut: Character cr ]
+	].
+
+	Transcript show: drawTopRow.
+	Transcript show: drawGameBoard
+]
+
 { #category : #initialization }
 Board >> fillBoardWithCells [
 	
