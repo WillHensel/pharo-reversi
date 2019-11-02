@@ -41,7 +41,10 @@ Board >> draw [
 					 	nextPutAll: row asString;
 						nextPutAll: ' | '.
 						
-						1 to: size do: [ :col | stream nextPutAll: ((cells at: row at: col) colorCode) ].
+						1 to: size do: [ :col | (cells at: row at: col) colorCode ~= 0 ifTrue: [ stream nextPutAll: (cells at: row at: col) colorCode asString ]
+																											ifFalse: [ stream nextPutAll: ' ' ].
+							stream nextPutAll: ' | '
+						].
 						
 						stream nextPut: Character cr ]
 	].
@@ -76,7 +79,8 @@ Board >> fillBoardWithCells [
 { #category : #initialization }
 Board >> initialize [
 	self size: 8.
-	self cells: (Array2D new: size)
+	self cells: (Array2D new: size).
+	self fillBoardWithCells
 ]
 
 { #category : #accessing }

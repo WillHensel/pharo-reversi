@@ -90,6 +90,12 @@ ReversiTest >> testFillBoardWithCells [
 	]
 ]
 
+{ #category : #tests }
+ReversiTest >> testGetNextMove [
+
+	testGame getNextMove.
+]
+
 { #category : #running }
 ReversiTest >> testInitializeGameBoard [
 	testGame initializeGameBoard.

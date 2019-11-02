@@ -166,6 +166,58 @@ Game >> gameBoard: anObject [
 	gameBoard := anObject
 ]
 
+{ #category : #'interaction loop' }
+Game >> gameLoop [
+	
+	| legalMoves move |
+	(self checkGameOver = false) whileTrue: [ 
+		self currentPlayerTurn: (self players at: 1).
+		legalMoves := self checkLegalMoves.
+		move := self getNextMove.
+		(legalMoves contains: move) ifTrue: [ 
+			self currentPlayerTurn takeTurn: move.
+		] ifFalse: [ move := self getNextMove ].
+		Transcript clear.
+		self gameBoard draw.
+	
+		self currentPlayerTurn: (self players at: 2).
+		legalMoves := self checkLegalMoves.
+		move := self getNextMove.
+		(legalMoves contains: move) ifTrue: [ 
+			self currentPlayerTurn takeTurn: move.
+		] ifFalse: [ move := self getNextMove ].
+		Transcript clear.
+		self gameBoard draw.
+	].
+	
+	Transcript show: self getWinner.
+]
+
+{ #category : #accessing }
+Game >> getNextMove [
+	
+	| input |
+	input := UIManager default request: 'Enter cell in format row, column'.
+	[(input matchesRegex: '\d[,]\s\d') = false ] whileTrue: [ 
+			input := UIManager default request: 'Enter cell in format row, column'
+	].
+	input := (input splitOn: ', ').
+	input at: 1 put: (input at: 1) asInteger.
+	input at: 2 put: (input at: 2) asInteger.
+	^input
+	
+]
+
+{ #category : #accessing }
+Game >> getPlayers [
+	| playerName |
+	playerName := UIManager default request: 'Enter player 1 name'.
+	self addPlayer: (Player new name: playerName color: 1).
+	
+	playerName := UIManager default request: 'Enter player 2 name'.
+	self addPlayer: (Player new name: playerName color: 2)
+]
+
 { #category : #accessing }
 Game >> getWinner [
 	| darkCount lightCount |
@@ -176,8 +228,11 @@ Game >> getWinner [
 	self gameBoard cells do: [ :cell | 
 		(cell colorCode: 1) ifTrue: [darkCount := darkCount + 1].
 		(cell colorCode: 2) ifTrue: [lightCount := lightCount + 2]
-	
-	]
+	].
+
+	darkCount > lightCount ifTrue: [ ^(self players at: 1) name ].
+	lightCount > darkCount ifTrue: [ ^(self players at: 2) name ].
+	darkCount = lightCount ifTrue: [ ^'Tie' ]
 ]
 
 { #category : #initialization }
@@ -200,4 +255,12 @@ Game >> players [
 { #category : #accessing }
 Game >> players: anObject [
 	players := anObject
+]
+
+{ #category : #accessing }
+Game >> start [
+	Transcript clear.
+	self getPlayers.
+	self gameBoard draw.
+	self gameLoop.
 ]
