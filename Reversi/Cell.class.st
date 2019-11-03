@@ -6,10 +6,17 @@ Class {
 	#superclass : #Board,
 	#instVars : [
 		'location',
-		'colorCode'
+		'colorCode',
+		'path'
 	],
 	#category : #Reversi
 }
+
+{ #category : #adding }
+Cell >> addToPath: aCollection [
+
+	self path addAll: aCollection.
+]
 
 { #category : #accessing }
 Cell >> colorCode [
@@ -27,6 +34,12 @@ Cell >> colorCode: aColorCode location: aLocation [
 	location := aLocation
 ]
 
+{ #category : #initialization }
+Cell >> initialize [
+	self path: OrderedCollection new.
+	^self
+]
+
 { #category : #accessing }
 Cell >> location [
 	^ location
@@ -35,4 +48,14 @@ Cell >> location [
 { #category : #accessing }
 Cell >> location: anObject [
 	location := anObject
+]
+
+{ #category : #accessing }
+Cell >> path [
+	^ path
+]
+
+{ #category : #accessing }
+Cell >> path: anObject [
+	path := anObject
 ]

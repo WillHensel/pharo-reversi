@@ -20,9 +20,10 @@ Game >> addPlayer: aPlayer [
 { #category : #check }
 Game >> checkAdjacentCells: aCell [
 "Failing tests"
-	| currentCell legalMoves |
+	| currentCell legalMoves tempPath |
 	
 	legalMoves := OrderedCollection  new.
+	tempPath := OrderedCollection new.
 	
 	aCell colorCode = currentPlayerTurn color ifTrue: [
 	
@@ -31,89 +32,127 @@ Game >> checkAdjacentCells: aCell [
 		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
 			[((currentCell location at: 1) < self gameBoard size) & 
 				((currentCell location at: 2) < self gameBoard size) & 
+					(currentCell colorCode ~= currentPlayerTurn color) &
 					(currentCell colorCode ~= 0)] whileTrue: [ 
-				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: ((currentCell location at: 2) + 1).
+						tempPath add: currentCell.
+						currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: ((currentCell location at: 2) + 1).
 			].
+			currentCell addToPath: tempPath.
 			legalMoves add: currentCell.
 		]
 	].
+
+	tempPath := OrderedCollection new.
 
 	currentCell := self gameBoard cells at: (aCell location at: 1) at: ((aCell location at: 2) + 1).
 		currentCell colorCode ~= 0 ifTrue: [
 		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
 			[((currentCell location at: 2) < self gameBoard size) & 
+				(currentCell colorCode ~= currentPlayerTurn color) &
 				(currentCell colorCode ~= 0)] whileTrue: [ 
+				tempPath add: currentCell.
 				currentCell := self gameBoard cells at: (currentCell location at: 1) at: ((currentCell location at: 2) + 1).
 			].
+			currentCell addToPath: tempPath.
 			legalMoves add: currentCell.
 		]
 	].
 
+	tempPath := OrderedCollection new.
+	
 	currentCell := self gameBoard cells at: ((aCell location at: 1) + 1) at: ((aCell location at: 2) + 1).
 	currentCell colorCode ~= 0 ifTrue: [
 		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
 			[((currentCell location at: 1) < self gameBoard size) & 
 				((currentCell location at: 2) < self gameBoard size) & 
+					(currentCell colorCode ~= currentPlayerTurn color) &
 					(currentCell colorCode ~= 0)] whileTrue: [ 
+					tempPath add: currentCell.
 				currentCell := self gameBoard cells at: ((currentCell location at: 1) + 1) at: ((currentCell location at: 2) + 1).
 			].
+			currentCell addToPath: tempPath.
 			legalMoves add: currentCell.
 		]
 	].
+
+	tempPath := OrderedCollection new.
 	
 	currentCell := self gameBoard cells at: ((aCell location at: 1) + 1) at: (aCell location at: 2).
 	currentCell colorCode ~= 0 ifTrue: [
 		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
 			[((currentCell location at: 1) < self gameBoard size) & 
+				(currentCell colorCode ~= currentPlayerTurn color) &
 				(currentCell colorCode ~= 0)] whileTrue: [ 
+				tempPath add: currentCell.
 				currentCell := self gameBoard cells at: ((currentCell location at: 1) + 1) at: (currentCell location at: 2).
 			].
+			currentCell addToPath: tempPath.
 			legalMoves add: currentCell.
 		]
 	].
+
+	tempPath := OrderedCollection new.
 	
 	currentCell := self gameBoard cells at: ((aCell location at: 1) + 1) at: ((aCell location at: 2) - 1).
 	currentCell colorCode ~= 0 ifTrue: [
 		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
 			[((currentCell location at: 1) < self gameBoard size) & 
 				((currentCell location at: 2) < self gameBoard size) & 
+					(currentCell colorCode ~= currentPlayerTurn color) &
 					(currentCell colorCode ~= 0)] whileTrue: [ 
-				currentCell := self gameBoard cells at: ((currentCell location at: 1) + 1) at: ((currentCell location at: 2) - 1).
+					tempPath add: currentCell.
+					currentCell := self gameBoard cells at: ((currentCell location at: 1) + 1) at: ((currentCell location at: 2) - 1).
 			].
+			currentCell addToPath: tempPath.
 			legalMoves add: currentCell.
 		]
 	].
+
+	tempPath := OrderedCollection new.
 	
 	currentCell := self gameBoard cells at: (aCell location at: 1) at: ((aCell location at: 2) - 1).
 	currentCell colorCode ~= 0 ifTrue: [
 		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
 			[((currentCell location at: 2) < self gameBoard size) & 
+				(currentCell colorCode ~= currentPlayerTurn color) &
 				(currentCell colorCode ~= 0)] whileTrue: [ 
+				tempPath add: currentCell.
 				currentCell := self gameBoard cells at: (currentCell location at: 1) at: ((currentCell location at: 2) - 1).
 			].
+			currentCell addToPath: tempPath.
 			legalMoves add: currentCell.
 		]
 	].
+
+	tempPath := OrderedCollection new.
 	
 	currentCell := self gameBoard cells at: ((aCell location at: 1) - 1) at: ((aCell location at: 2) - 1).
 	currentCell colorCode ~= 0 ifTrue: [
 		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
 			[((currentCell location at: 1) < self gameBoard size) & 
 				((currentCell location at: 2) < self gameBoard size) & 
+					(currentCell colorCode ~= currentPlayerTurn color) &
 					(currentCell colorCode ~= 0)] whileTrue: [ 
-				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: ((currentCell location at: 2) - 1).
+					tempPath add: currentCell.
+					currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: ((currentCell location at: 2) - 1).
 			].
+			currentCell addToPath: tempPath.
 			legalMoves add: currentCell.
 		]
 	].
+
+	tempPath := OrderedCollection new.
 	
 	currentCell := self gameBoard cells at: ((aCell location at: 1) - 1) at: (aCell location at: 2).
 	currentCell colorCode ~= 0 ifTrue: [
 		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
 			[((currentCell location at: 1) < self gameBoard size) & 
+				(currentCell colorCode ~= currentPlayerTurn color) &
 				(currentCell colorCode ~= 0)] whileTrue: [ 
+				tempPath add: currentCell.
 				currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: (currentCell location at: 2).
 			].
+			currentCell addToPath: tempPath.
 			legalMoves add: currentCell.
 		]
 	].
@@ -156,6 +195,13 @@ Game >> currentPlayerTurn: anObject [
 	currentPlayerTurn := anObject
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> flipCells: aCell [
+	aCell path do: [ :cell | cell colorCode: self currentPlayerTurn color ]
+
+	
+]
+
 { #category : #accessing }
 Game >> gameBoard [
 	^ gameBoard
@@ -170,22 +216,32 @@ Game >> gameBoard: anObject [
 Game >> gameLoop [
 	
 	| legalMoves move |
-	(self checkGameOver = false) whileTrue: [ 
+	[ self checkGameOver = false ] whileTrue: [ 
 		self currentPlayerTurn: (self players at: 1).
 		legalMoves := self checkLegalMoves.
 		move := self getNextMove.
-		(legalMoves contains: move) ifTrue: [ 
-			self currentPlayerTurn takeTurn: move.
-		] ifFalse: [ move := self getNextMove ].
+		move := self gameBoard cells at: (move at: 1) at: (move at: 2).
+		[(legalMoves includes: move) = false] whileTrue: [
+					move := self getNextMove.
+					move := self gameBoard cells at: (move at: 1) at: (move at: 2).
+		].
+		self currentPlayerTurn takeTurn: move.
+		self flipCells: move.
+	
 		Transcript clear.
 		self gameBoard draw.
 	
 		self currentPlayerTurn: (self players at: 2).
 		legalMoves := self checkLegalMoves.
 		move := self getNextMove.
-		(legalMoves contains: move) ifTrue: [ 
-			self currentPlayerTurn takeTurn: move.
-		] ifFalse: [ move := self getNextMove ].
+		move := self gameBoard cells at: (move at: 1) at: (move at: 2).
+		[(legalMoves includes: move) = false] whileTrue: [
+					move := self getNextMove.
+					move := self gameBoard cells at: (move at: 1) at: (move at: 2).
+		].
+		self currentPlayerTurn takeTurn: move.
+		self flipCells: move.
+	
 		Transcript clear.
 		self gameBoard draw.
 	].
