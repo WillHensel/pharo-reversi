@@ -185,6 +185,33 @@ Game >> checkLegalMoves [
 	^allLegalMoves
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> checkRow: anOrderedCollection [
+
+	| currentCell tempPath |
+	tempPath := OrderedCollection new.
+	
+	currentCell := self gameBoard cells at: (anOrderedCollection at: 1) 
+													at: (anOrderedCollection at: 2).
+	currentCell colorCode ~= 0 ifTrue: [
+		currentCell colorCode ~= currentPlayerTurn color ifTrue: [ 
+			[((currentCell location at: 1) < self gameBoard size) & 
+				((currentCell location at: 2) < self gameBoard size) & 
+					(currentCell colorCode ~= currentPlayerTurn color) &
+					(currentCell colorCode ~= 0)] whileTrue: [ 
+						tempPath add: currentCell.
+						currentCell := self gameBoard cells at: ((currentCell location at: 1) - 1) at: ((currentCell location at: 2) + 1).
+			].
+			currentCell addToPath: tempPath.
+			^currentCell
+			"legalMoves add: currentCell."
+		]
+	].
+	
+
+	
+]
+
 { #category : #accessing }
 Game >> currentPlayerTurn [
 	^ currentPlayerTurn
@@ -230,6 +257,8 @@ Game >> gameLoop [
 	
 		Transcript clear.
 		self gameBoard draw.
+		Transcript show: ((self players at: 1) name, ' - 1', (Character cr)asString).
+		Transcript show: ((self players at: 2) name, ' - 2').
 	
 		self currentPlayerTurn: (self players at: 2).
 		legalMoves := self checkLegalMoves.
@@ -244,6 +273,8 @@ Game >> gameLoop [
 	
 		Transcript clear.
 		self gameBoard draw.
+		Transcript show: ((self players at: 1) name, ' - 1', (Character cr)asString).
+		Transcript show: ((self players at: 2) name, ' - 2').
 	].
 	
 	Transcript show: self getWinner.
@@ -253,9 +284,9 @@ Game >> gameLoop [
 Game >> getNextMove [
 	
 	| input |
-	input := UIManager default request: 'Enter cell in format row, column'.
+	input := UIManager default request: currentPlayerTurn name, ', enter cell in format row, column'.
 	[(input matchesRegex: '\d[,]\s\d') = false ] whileTrue: [ 
-			input := UIManager default request: 'Enter cell in format row, column'
+			input := UIManager default request: currentPlayerTurn name, ', enter cell in format row, column'
 	].
 	input := (input splitOn: ', ').
 	input at: 1 put: (input at: 1) asInteger.
