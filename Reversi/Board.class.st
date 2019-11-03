@@ -50,7 +50,7 @@ Board >> draw [
 	].
 
 	Transcript show: drawTopRow.
-	Transcript show: drawGameBoard
+	Transcript show: drawGameBoard.
 ]
 
 { #category : #initialization }
