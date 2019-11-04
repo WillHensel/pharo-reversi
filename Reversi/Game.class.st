@@ -108,6 +108,7 @@ Game >> checkRow: anOrderedCollection fromCell: aCell [
 					(((currentCell location at: 2) + anOrderedCollection at: 2) > 0) & 
 						(currentCell colorCode ~= currentPlayerTurn color) &
 							(currentCell colorCode ~= 0)] 
+
 		whileTrue: [ 
 						tempPath add: currentCell.
 						currentCell := self gameBoard cells at: ((currentCell location at: 1) + anOrderedCollection at: 1) 
