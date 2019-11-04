@@ -85,18 +85,30 @@ Game >> checkRow: anOrderedCollection fromCell: aCell [
 	tempPath := OrderedCollection new.
 	currentCell := aCell.
 	
-	currentCell := self gameBoard cells at: ((currentCell location at: 1) + anOrderedCollection at: 1)
-													at: ((currentCell location at: 2) + anOrderedCollection at: 2).
+	(((currentCell location at: 1) + anOrderedCollection at: 1) <= self gameBoard size) & 
+	(((currentCell location at: 2) + anOrderedCollection at: 2) <= self gameBoard size) &
+	(((currentCell location at: 1) + anOrderedCollection at: 1) > 0) &
+	(((currentCell location at: 2) + anOrderedCollection at: 2) > 0)
+	ifTrue: [  
+		currentCell := self gameBoard cells at: ((currentCell location at: 1) + anOrderedCollection at: 1)
+														at: ((currentCell location at: 2) + anOrderedCollection at: 2).
+	].
+													
 	((currentCell location at: 1) < self gameBoard size) & 
 		((currentCell location at: 2) < self gameBoard size) &
-			(currentCell colorCode ~= 0) &
-				(currentCell colorCode ~= currentPlayerTurn color)
+			((currentCell location at: 1) > 0) & 
+				((currentCell location at: 2) > 0) & 
+					(currentCell colorCode ~= 0) &
+						(currentCell colorCode ~= currentPlayerTurn color)
 	ifTrue: [ 
 			
-		[((currentCell location at: 1) < self gameBoard size) & 
-			((currentCell location at: 2) < self gameBoard size) & 
-				(currentCell colorCode ~= currentPlayerTurn color) &
-					(currentCell colorCode ~= 0)] 
+		[(((currentCell location at: 1) + anOrderedCollection at: 1) <= self gameBoard size) & 
+			(((currentCell location at: 2) + anOrderedCollection at: 2) <= self gameBoard size) & 
+				(((currentCell location at: 1) + anOrderedCollection at: 1) > 0) & 
+					(((currentCell location at: 2) + anOrderedCollection at: 2) > 0) & 
+						(currentCell colorCode ~= currentPlayerTurn color) &
+							(currentCell colorCode ~= 0)] 
+
 		whileTrue: [ 
 						tempPath add: currentCell.
 						currentCell := self gameBoard cells at: ((currentCell location at: 1) + anOrderedCollection at: 1) 
@@ -156,7 +168,7 @@ Game >> gameLoop [
 		Transcript clear.
 		self gameBoard draw.
 		Transcript show: ((self players at: 1) name, ' - 1', (Character cr)asString).
-		Transcript show: ((self players at: 2) name, ' - 2').
+		Transcript show: ((self players at: 2) name, ' - 2', (Character cr)asString).
 	
 		self currentPlayerTurn: (self players at: 2).
 		legalMoves := self checkLegalMoves.
@@ -172,7 +184,7 @@ Game >> gameLoop [
 		Transcript clear.
 		self gameBoard draw.
 		Transcript show: ((self players at: 1) name, ' - 1', (Character cr)asString).
-		Transcript show: ((self players at: 2) name, ' - 2').
+		Transcript show: ((self players at: 2) name, ' - 2', (Character cr)asString).
 	].
 	
 	Transcript show: self getWinner.
@@ -211,13 +223,13 @@ Game >> getWinner [
 	lightCount := 0.
 	
 	self gameBoard cells do: [ :cell | 
-		(cell colorCode: 1) ifTrue: [darkCount := darkCount + 1].
-		(cell colorCode: 2) ifTrue: [lightCount := lightCount + 2]
+		(cell colorCode = 1) ifTrue: [darkCount := darkCount + 1].
+		(cell colorCode = 2) ifTrue: [lightCount := lightCount + 2]
 	].
 
-	darkCount > lightCount ifTrue: [ ^(self players at: 1) name ].
-	lightCount > darkCount ifTrue: [ ^(self players at: 2) name ].
-	darkCount = lightCount ifTrue: [ ^'Tie' ]
+	darkCount > lightCount ifTrue: [ ^(self players at: 1) name, ' wins!' ].
+	lightCount > darkCount ifTrue: [ ^(self players at: 2) name, ' wins!' ].
+	darkCount = lightCount ifTrue: [ ^'Tie!' ]
 ]
 
 { #category : #initialization }
